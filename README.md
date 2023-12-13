@@ -6,13 +6,13 @@
     <a href="https://discord.gg/ySsgfQmY">
         <img src="https://img.shields.io/discord/1183768311851388958.svg?colorB=Blue&logo=discord&label=Support+%26+Community&style=for-the-badge" alt="Support">
     </a>
-    <a href="https://github.com/IzanagiCraft/message-formatter/issues">
-        <img src="https://img.shields.io/github/issues/IzanagiCraft/message-formatter.svg?style=for-the-badge">
+    <a href="https://github.com/IzanagiCraft/message-format/issues">
+        <img src="https://img.shields.io/github/issues/IzanagiCraft/message-format.svg?style=for-the-badge">
     </a>
     <a href="https://www.gnu.org/licenses/gpl-3.0">
         <img src="https://img.shields.io/badge/License-GPLv3-blue.svg?style=for-the-badge">
     </a>
-    <a href="https://github.com/IzanagiCraft/IzanagiCraft/issues">
+    <a href="https://openjdk.org/projects/jdk/17/">
         <img src="https://img.shields.io/badge/Java-%3E%3D%2017-brightgreen?style=for-the-badge">
     </a>
 </div>
