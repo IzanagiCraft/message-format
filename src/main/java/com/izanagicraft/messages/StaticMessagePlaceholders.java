@@ -28,26 +28,26 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * message-format; com.izanagicraft.messages:Formatter
+ * message-format; com.izanagicraft.messages:StatticMessagePlaceholders
  * <p>
  * Utility class for handling placeholders in messages.
  *
  * @author <a href="https://github.com/sanguine6660">@sanguine6660</a>
  * @since 13.12.2023
  */
-public class Formatter {
+public class StaticMessagePlaceholders {
 
     private static Map<String, Object> defaultReplacements = new ConcurrentHashMap<>();
 
     // instantiation prevention
-    private Formatter() {
+    private StaticMessagePlaceholders() {
     }
 
     /**
      * Fast format a string with defaultReplacement placeholders.
      *
      * @param format The format string with placeholders
-     * @return Formatted string.replaced with {@link Formatter#getDefaultReplacements()}
+     * @return Formatted string replaced with {@link StaticMessagePlaceholders#getDefaultReplacements()}
      */
     public static String fastFormat(String format) {
         return fastFormat(format, Map.of());
@@ -102,16 +102,14 @@ public class Formatter {
     }
 
     /**
-     * Set the default replacements for placeholders.
+     * Add or update default replacements for placeholders.
      *
-     * @param defaultReplacements The default replacements to set.
+     * @param additionalReplacements The additional replacements to add or update.
      */
-    public static void setDefaultReplacements(Map<String, Object> defaultReplacements) {
-        if (defaultReplacements != null) {
-            // Set the default replacements for placeholders
-            Formatter.defaultReplacements = defaultReplacements;
-        } else {
-            Formatter.defaultReplacements = new ConcurrentHashMap<>();
+    public static void addDefaultReplacements(Map<String, Object> additionalReplacements) {
+        if (additionalReplacements != null) {
+            // Update the default replacements with the additional replacements
+            StaticMessagePlaceholders.defaultReplacements.putAll(additionalReplacements);
         }
     }
 
@@ -121,7 +119,21 @@ public class Formatter {
      * @return The default replacements.
      */
     public static Map<String, Object> getDefaultReplacements() {
-        return defaultReplacements;
+        return StaticMessagePlaceholders.defaultReplacements;
+    }
+
+    /**
+     * Set the default replacements for placeholders.
+     *
+     * @param defaultReplacements The default replacements to set.
+     */
+    public static void setDefaultReplacements(Map<String, Object> defaultReplacements) {
+        if (defaultReplacements != null) {
+            // Set the default replacements for placeholders
+            StaticMessagePlaceholders.defaultReplacements = defaultReplacements;
+        } else {
+            StaticMessagePlaceholders.defaultReplacements = new ConcurrentHashMap<>();
+        }
     }
 
 }

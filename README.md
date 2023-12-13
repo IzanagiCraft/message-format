@@ -4,15 +4,12 @@
 
 ---
 
-
-
 ## Overview
 
-The Message Format Library is a Java library designed to facilitate message formatting and translation in Java applications. It provides a set of classes, including `WrappedString`, `Translations`, and `Formatter`, to assist in handling and formatting messages efficiently.
+The Message Format Library is a Java library designed to facilitate message formatting and translation in Java applications. It provides a set of classes,
+including `WrappedString`, `Translations`, and `Formatter`, to assist in handling and formatting messages efficiently.
 
 ---
-
-
 
 ## WrappedString
 
@@ -27,11 +24,10 @@ System.out.println(wrappedString.toString()); // Output: Hello, World!
 
 ---
 
-
-
 ## Translations
 
-The `Translations` class manages translations for different locales using a map of `Properties` objects. It supports the initialization of translations, default replacements, and provides methods for translating messages.
+The `Translations` class manages translations for different locales using a map of `Properties` objects. It supports the initialization of translations, default replacements, and
+provides methods for translating messages.
 
 ### Example Initialization:
 
@@ -56,11 +52,10 @@ System.out.println(translatedMessage); // Output: Hello, John!
 
 ---
 
-
-
 ## Formatter
 
-The `Formatter` class offers fast and efficient string formatting with placeholder replacement. It supports default replacements and allows users to provide additional values for specific placeholders.
+The `Formatter` class offers fast and efficient string formatting with placeholder replacement. It supports default replacements and allows users to provide additional values for
+specific placeholders.
 
 ### Example Usage:
 
@@ -73,8 +68,6 @@ System.out.println(formattedMessage); // Output: Hello, John! Today is Monday.
 ```
 
 ---
-
-
 
 ## License
 
@@ -90,8 +83,6 @@ We follow [Semantic Versioning](https://semver.org/). For the available versions
 
 ---
 
-
-
 ## Testing
 
 The library includes a comprehensive set of JUnit tests to ensure robust functionality. Here's an example test class demonstrating various scenarios:
@@ -103,8 +94,6 @@ The library includes a comprehensive set of JUnit tests to ensure robust functio
 Feel free to explore and expand on these tests as needed for your specific use cases.
 
 ---
-
-
 
 ## Authorship
 

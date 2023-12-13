@@ -45,16 +45,6 @@ public class WrappedString {
     }
 
     /**
-     * Returns the String representation of this WrappedString.
-     *
-     * @return The String value of this WrappedString.
-     */
-    @Override
-    public String toString() {
-        return this.value;
-    }
-
-    /**
      * Creates a new WrappedString object with the specified String value.
      *
      * @param str The String value to be wrapped.
@@ -62,6 +52,16 @@ public class WrappedString {
      */
     public static WrappedString of(String str) {
         return new WrappedString(str);
+    }
+
+    /**
+     * Returns the String representation of this WrappedString.
+     *
+     * @return The String value of this WrappedString.
+     */
+    @Override
+    public String toString() {
+        return this.value;
     }
 
     /**

@@ -17,7 +17,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import com.izanagicraft.messages.Formatter;
+import com.izanagicraft.messages.StaticMessagePlaceholders;
 import com.izanagicraft.messages.Translations;
 import com.izanagicraft.messages.WrappedString;
 import org.junit.jupiter.api.BeforeAll;
@@ -118,7 +118,7 @@ public class TranslationsTest {
         replacements.put("1", "Doe");
 
         // Perform fast formatting with placeholders
-        String formatted = Formatter.fastFormat("Hello, ${0} ${1}!", replacements);
+        String formatted = StaticMessagePlaceholders.fastFormat("Hello, ${0} ${1}!", replacements);
         assertEquals("Hello, John Doe!", formatted, "Fast format with placeholders failed.");
     }
 
@@ -126,7 +126,7 @@ public class TranslationsTest {
     @Test
     void fastFormatWithoutPlaceholders() {
         String input = "Hello, World!";
-        String formatted = Formatter.fastFormat(input, new HashMap<>());
+        String formatted = StaticMessagePlaceholders.fastFormat(input, new HashMap<>());
         assertEquals(input, formatted, "Fast format without placeholders should return the input.");
     }
 

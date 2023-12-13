@@ -21,7 +21,10 @@ package com.izanagicraft.messages;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Properties;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -34,15 +37,19 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public final class Translations {
 
-    // instantiation prevention
-    private Translations() {
-    }
-
     /**
      * A map that stores translations for different locales.
      * The keys are locale codes, and the values are Properties objects containing translations.
      */
     private static Map<String, Properties> translations = new ConcurrentHashMap<>();
+    /**
+     * The fallback Properties object used when a translation is not available for a specific locale.
+     */
+    private static Properties fallback;
+
+    // instantiation prevention
+    private Translations() {
+    }
 
     /**
      * Gets the map of translations for different locales.
@@ -52,11 +59,6 @@ public final class Translations {
     public static Map<String, Properties> getTranslations() {
         return translations;
     }
-
-    /**
-     * The fallback Properties object used when a translation is not available for a specific locale.
-     */
-    private static Properties fallback;
 
     /**
      * Gets the fallback Properties object.
@@ -71,10 +73,10 @@ public final class Translations {
      * Gets the default replacements used by the Formatter for placeholder substitution.
      *
      * @return A map of default replacements with String keys and Object values.
-     * These replacements are used by the {@link Formatter} class during text formatting.
+     * These replacements are used by the {@link StaticMessagePlaceholders} class during text formatting.
      */
     public static Map<String, Object> getDefaultReplacements() {
-        return Formatter.getDefaultReplacements();
+        return StaticMessagePlaceholders.getDefaultReplacements();
     }
 
     /**
@@ -102,11 +104,20 @@ public final class Translations {
     /**
      * Initialize the translations with default replacements and language files.
      *
+     * @param files Language properties files to load.
+     */
+    public static void init(File... files) {
+        init(null, files);
+    }
+
+    /**
+     * Initialize the translations with default replacements and language files.
+     *
      * @param defaultReplacements Default replacement map for placeholders.
      * @param files               Language properties files to load.
      */
     public static void init(Map<String, Object> defaultReplacements, File... files) {
-        Formatter.setDefaultReplacements(defaultReplacements);
+        StaticMessagePlaceholders.addDefaultReplacements(defaultReplacements);
 
         // Load each language properties file
         for (File file : files) {
@@ -159,7 +170,7 @@ public final class Translations {
         for (int i = 0; i < args.length; i++) {
             replace.put("" + i, args[i]);
         }
-        return Formatter.fastFormat(fallback.getProperty(key, key), replace);
+        return StaticMessagePlaceholders.fastFormat(fallback.getProperty(key, key), replace);
     }
 
     /**
@@ -174,7 +185,7 @@ public final class Translations {
         for (int i = 0; i < args.length; i++) {
             replace.put("" + i, args[i]);
         }
-        return Formatter.fastFormat(fallback.getProperty(key, key), replace);
+        return StaticMessagePlaceholders.fastFormat(fallback.getProperty(key, key), replace);
     }
 
     /**
@@ -184,7 +195,7 @@ public final class Translations {
      * @return Translated and formatted text.
      */
     public static String translate(String key) {
-        return Formatter.fastFormat(fallback.getProperty(key, key), getDefaultReplacements());
+        return StaticMessagePlaceholders.fastFormat(fallback.getProperty(key, key), getDefaultReplacements());
     }
 
     /**
@@ -201,7 +212,7 @@ public final class Translations {
         for (int i = 0; i < args.length; i++) {
             replace.put("" + i, args[i]);
         }
-        return Formatter.fastFormat(translations.get(locale.getLanguage()).getProperty(key, key), replace);
+        return StaticMessagePlaceholders.fastFormat(translations.get(locale.getLanguage()).getProperty(key, key), replace);
     }
 
     /**
@@ -218,7 +229,7 @@ public final class Translations {
         for (int i = 0; i < args.length; i++) {
             replace.put("" + i, args[i]);
         }
-        return Formatter.fastFormat(translations.get(locale.getLanguage()).getProperty(key, key), replace);
+        return StaticMessagePlaceholders.fastFormat(translations.get(locale.getLanguage()).getProperty(key, key), replace);
     }
 
     /**
@@ -230,7 +241,7 @@ public final class Translations {
      */
     public static String translate(Locale locale, String key) {
         if (!translations.containsKey(locale.getLanguage())) return translate(key);
-        return Formatter.fastFormat(translations.get(locale.getLanguage()).getProperty(key, key), getDefaultReplacements());
+        return StaticMessagePlaceholders.fastFormat(translations.get(locale.getLanguage()).getProperty(key, key), getDefaultReplacements());
     }
 
     /**
@@ -247,7 +258,7 @@ public final class Translations {
         for (int i = 0; i < args.length; i++) {
             replace.put("" + i, args[i]);
         }
-        return Formatter.fastFormat(translations.get(langName).getProperty(key, key), replace);
+        return StaticMessagePlaceholders.fastFormat(translations.get(langName).getProperty(key, key), replace);
     }
 
     /**
@@ -264,7 +275,7 @@ public final class Translations {
         for (int i = 0; i < args.length; i++) {
             replace.put("" + i, args[i]);
         }
-        return Formatter.fastFormat(translations.get(langName).getProperty(key, key), replace);
+        return StaticMessagePlaceholders.fastFormat(translations.get(langName).getProperty(key, key), replace);
     }
 
     /**
@@ -276,7 +287,7 @@ public final class Translations {
      */
     public static String translate(WrappedString langName, String key) {
         if (!translations.containsKey(langName)) return translate(key);
-        return Formatter.fastFormat(translations.get(langName).getProperty(key, key), getDefaultReplacements());
+        return StaticMessagePlaceholders.fastFormat(translations.get(langName).getProperty(key, key), getDefaultReplacements());
     }
 
 }
