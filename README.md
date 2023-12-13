@@ -22,7 +22,7 @@
 ## Overview
 
 The Message Format Library is a Java library designed to facilitate message formatting and translation in Java applications. It provides a set of classes,
-including `WrappedString`, `Translations`, and `StaticMessagePlaceholders`, to assist in handling and formatting messages efficiently.
+including `WrappedString`, `GlobalTranslations`, and `StaticMessagePlaceholders`, to assist in handling and formatting messages efficiently.
 
 ---
 
@@ -43,9 +43,9 @@ System.out.println(wrappedString.toString()); // Output: Hello, World!
 
 ---
 
-## Translations
+## GlobalTranslations
 
-The `Translations` class manages translations for different locales using a map of `Properties` objects. It supports the initialization of translations, default replacements, and
+The `GlobalTranslations` class manages translations for different locales using a map of `Properties` objects. It supports the initialization of translations, default replacements, and
 provides methods for translating messages.
 
 ### Example Initialization:
@@ -55,17 +55,17 @@ provides methods for translating messages.
 File englishFile = new File("en.properties");
 File spanishFile = new File("es.properties");
 
-Translations.init(Map.of("0", "MyApp"), englishFile, spanishFile);
+GlobalTranslations.init(Map.of("0", "MyApp"), englishFile, spanishFile);
 ```
 
 ### Example Translation:
 
 ```java
-String translatedMessage = Translations.translate(Locale.EN, "greeting");
+String translatedMessage = GlobalTranslations.translate(Locale.EN, "greeting");
 System.out.println(translatedMessage); // Output: Hello, MyApp!
 
 // with added object placeholers
-String translatedMessage = Translations.translate(Locale.EN, "greeting", "John");
+String translatedMessage = GlobalTranslations.translate(Locale.EN, "greeting", "John");
 System.out.println(translatedMessage); // Output: Hello, John!
 ```
 
