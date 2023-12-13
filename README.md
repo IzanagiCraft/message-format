@@ -1,13 +1,32 @@
-# Message Format Library
-
-![Java Version](https://img.shields.io/badge/Java-%3E%3D%2017-brightgreen?style=for-the-badge) [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg?style=for-the-badge)](https://www.gnu.org/licenses/gpl-3.0)
+<div align="center">
+    <img src="https://avatars.githubusercontent.com/u/153524152?s=220" alt="logo">
+</div>
+<div align="center">
+    <h1>IzanagiCraft - Message Format Library</h1>
+    <a href="https://discord.gg/ySsgfQmY">
+        <img src="https://img.shields.io/discord/1183768311851388958.svg?colorB=Blue&logo=discord&label=Support+%26+Community&style=for-the-badge" alt="Support">
+    </a>
+    <a href="https://github.com/IzanagiCraft/message-formatter/issues">
+        <img src="https://img.shields.io/github/issues/IzanagiCraft/message-formatter.svg?style=for-the-badge">
+    </a>
+    <a href="https://www.gnu.org/licenses/gpl-3.0">
+        <img src="https://img.shields.io/badge/License-GPLv3-blue.svg?style=for-the-badge">
+    </a>
+    <a href="https://github.com/IzanagiCraft/IzanagiCraft/issues">
+        <img src="https://img.shields.io/badge/Java-%3E%3D%2017-brightgreen?style=for-the-badge">
+    </a>
+</div>
 
 ---
 
 ## Overview
 
 The Message Format Library is a Java library designed to facilitate message formatting and translation in Java applications. It provides a set of classes,
-including `WrappedString`, `Translations`, and `Formatter`, to assist in handling and formatting messages efficiently.
+including `WrappedString`, `Translations`, and `StaticMessagePlaceholders`, to assist in handling and formatting messages efficiently.
+
+---
+
+## TODO: add implementation
 
 ---
 
@@ -52,20 +71,7 @@ System.out.println(translatedMessage); // Output: Hello, John!
 
 ---
 
-## Formatter
-
-The `Formatter` class offers fast and efficient string formatting with placeholder replacement. It supports default replacements and allows users to provide additional values for
-specific placeholders.
-
-### Example Usage:
-
-```java
-String formatString = "Hello, ${name}! Today is ${day}.";
-Map<String, Object> values = Map.of("name", "John", "day", "Monday");
-
-String formattedMessage = Formatter.fastFormat(formatString, values);
-System.out.println(formattedMessage); // Output: Hello, John! Today is Monday.
-```
+## TODO: StaticMessagePlaceholders formatting description
 
 ---
 
@@ -83,22 +89,10 @@ We follow [Semantic Versioning](https://semver.org/). For the available versions
 
 ---
 
-## Testing
-
-The library includes a comprehensive set of JUnit tests to ensure robust functionality. Here's an example test class demonstrating various scenarios:
-
-```java
-// TODO: test class content here...
-```
-
-Feel free to explore and expand on these tests as needed for your specific use cases.
-
----
-
 ## Authorship
 
 This library is actively maintained by the IzanagiCraft team. For inquiries, reach out to [contact@izanagicraft.com](mailto:contact@izanagicraft.com).
 
 ## Copyright
 
-(c) 2023 - present | IzanagiCraft team and contributors. See the [LICENSE](./LICENSE) file for details.
+Copyright (c) 2023 - present | IzanagiCraft team and contributors. See the [LICENSE](./LICENSE) file for details.
