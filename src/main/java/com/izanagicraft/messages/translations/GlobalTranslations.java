@@ -31,7 +31,6 @@ import java.util.Properties;
  * message-format; com.izanagicraft.messages.translations:GlobalTranslations
  * <p>
  * Utility class for handling translations with placeholders.
- * </p>
  * <p>
  * Example usage:
  * <pre>
@@ -40,11 +39,9 @@ import java.util.Properties;
  * String translatedText = GlobalTranslations.translate("greeting", "John");
  * }
  * </pre>
- * </p>
  * <p>
  * This class provides static methods to interact with the TranslationHandler,
  * which manages translations for different locales with support for placeholders.
- * </p>
  *
  * @author <a href="https://github.com/sanguine6660">@sanguine6660</a>
  * @since 13.12.2023

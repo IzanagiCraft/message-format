@@ -38,7 +38,6 @@ import java.util.concurrent.ConcurrentHashMap;
  * <p>
  * The {@code TranslationHandler} class provides methods to manage translations
  * for different locales with support for placeholders.
- * </p>
  * <p>
  * Example usage:
  * <pre>
@@ -48,15 +47,12 @@ import java.util.concurrent.ConcurrentHashMap;
  * String translatedText = translations.translate("greeting", "John");
  * }
  * </pre>
- * </p>
  * <p>
  * Note: The class follows the singleton pattern, and instances should
  * be created using the provided constructors or by calling the {@code init} method.
- * </p>
  * <p>
  * This class is not meant to be instantiated directly; instead, use the provided
  * constructors or the {@code init} method to initialize the translations.
- * </p>
  *
  * @author <a href="https://github.com/LuciferMorningstarDev">LuciferMorningstarDev</a>
  * @since 13.12.2023
@@ -80,7 +76,6 @@ public class TranslationHandler {
      * <p>
      * Creates an instance of the Translations class without initializing translations.
      * To initialize translations, use the {@code init} method.
-     * </p>
      */
     public TranslationHandler() {
         // Empty constructor
@@ -91,7 +86,6 @@ public class TranslationHandler {
      * <p>
      * Creates an instance of the Translations class and initializes translations
      * using the provided language properties files.
-     * </p>
      *
      * @param files Language properties files to load.
      */
@@ -105,7 +99,6 @@ public class TranslationHandler {
      * <p>
      * Creates an instance of the Translations class and initializes translations
      * using the provided default replacements and language properties files.
-     * </p>
      *
      * @param defaultReplacements Default replacement map for placeholders.
      * @param files               Language properties files to load.
