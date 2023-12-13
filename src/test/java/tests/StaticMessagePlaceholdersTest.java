@@ -31,7 +31,7 @@ import static org.junit.jupiter.api.Assertions.*;
 /**
  * message-format; tests:StaticMessagePlaceholdersTest
  *
- * @author <a href="https://github.com/LuciferMorningstarDev">LuciferMorningstarDev</a>
+ * @author <a href="https://github.com/sanguine6660">@sanguine6660</a>
  * @since 13.12.2023
  */
 public class StaticMessagePlaceholdersTest {

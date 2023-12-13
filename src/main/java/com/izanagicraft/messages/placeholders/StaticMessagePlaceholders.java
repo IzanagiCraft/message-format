@@ -19,13 +19,7 @@
 
 package com.izanagicraft.messages.placeholders;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * message-format; com.izanagicraft.messages.placeholders:StaticMessagePlaceholders
@@ -37,7 +31,7 @@ import java.util.regex.Pattern;
  */
 public class StaticMessagePlaceholders {
 
-    private static Map<String, Object> defaultReplacements = new ConcurrentHashMap<>();
+    private static MessagePlaceholderHandler placeholderHandler = new MessagePlaceholderHandler();
 
     // instantiation prevention
     private StaticMessagePlaceholders() {
@@ -50,7 +44,7 @@ public class StaticMessagePlaceholders {
      * @return Formatted string replaced with {@link StaticMessagePlaceholders#getDefaultReplacements()}
      */
     public static String fastFormat(String format) {
-        return fastFormat(format, Map.of());
+        return placeholderHandler.fastFormat(format);
     }
 
     /**
@@ -61,44 +55,7 @@ public class StaticMessagePlaceholders {
      * @return Formatted string.
      */
     public static String fastFormat(String format, Map<String, Object> values) {
-        // Create a copy of the default replacements to avoid modifying the original map
-        Map<String, Object> replacements = new HashMap<>(getDefaultReplacements());
-
-        // Add values to the replacements map, but only for keys that do not already exist
-        values.forEach((key, value) -> replacements.putIfAbsent(key, value));
-
-        // Create a StringBuilder to modify the format string
-        StringBuilder formatter = new StringBuilder(format);
-
-        // Create a list to store the replacement values
-        List<Object> valueList = new ArrayList<>();
-
-        // Create a matcher to find placeholders in the format string
-        Matcher matcher = Pattern.compile("\\$\\{(\\w+)}").matcher(format);
-
-        // Iterate through the format string and find placeholders
-        while (matcher.find()) {
-            // Extract the placeholder key from the match
-            String key = matcher.group(1);
-
-            // Create the format key in the format "${key}"
-            String formatKey = String.format("${%s}", key);
-
-            // Find the index of the format key in the formatter
-            int index = formatter.indexOf(formatKey);
-
-            // If the format key is found
-            if (index != -1) {
-                // Replace the format key with "%s" for formatting
-                formatter.replace(index, index + formatKey.length(), "%s");
-
-                // Add the corresponding value to the value list
-                valueList.add(values.get(key));
-            }
-        }
-
-        // Use String.format to replace placeholders with values and return the formatted string
-        return String.format(formatter.toString(), valueList.toArray());
+        return placeholderHandler.fastFormat(format, values);
     }
 
     /**
@@ -107,10 +64,7 @@ public class StaticMessagePlaceholders {
      * @param additionalReplacements The additional replacements to add or update.
      */
     public static void addDefaultReplacements(Map<String, Object> additionalReplacements) {
-        if (additionalReplacements != null) {
-            // Update the default replacements with the additional replacements
-            StaticMessagePlaceholders.defaultReplacements.putAll(additionalReplacements);
-        }
+        placeholderHandler.addDefaultReplacements(additionalReplacements);
     }
 
     /**
@@ -119,7 +73,7 @@ public class StaticMessagePlaceholders {
      * @return The default replacements.
      */
     public static Map<String, Object> getDefaultReplacements() {
-        return StaticMessagePlaceholders.defaultReplacements;
+        return placeholderHandler.getDefaultReplacements();
     }
 
     /**
@@ -128,12 +82,7 @@ public class StaticMessagePlaceholders {
      * @param defaultReplacements The default replacements to set.
      */
     public static void setDefaultReplacements(Map<String, Object> defaultReplacements) {
-        if (defaultReplacements != null) {
-            // Set the default replacements for placeholders
-            StaticMessagePlaceholders.defaultReplacements = defaultReplacements;
-        } else {
-            StaticMessagePlaceholders.defaultReplacements = new ConcurrentHashMap<>();
-        }
+        placeholderHandler.setDefaultReplacements(defaultReplacements);
     }
 
 }

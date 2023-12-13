@@ -19,39 +19,51 @@
 
 package com.izanagicraft.messages.translations;
 
-import com.izanagicraft.messages.strings.WrappedString;
 import com.izanagicraft.messages.placeholders.StaticMessagePlaceholders;
+import com.izanagicraft.messages.strings.WrappedString;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Properties;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * message-format; com.izanagicraft.messages.translations:GlobalTranslations
  * <p>
  * Utility class for handling translations with placeholders.
+ * </p>
+ * <p>
+ * Example usage:
+ * <pre>
+ * {@code
+ * GlobalTranslations.init(new File("en_US.properties"), new File("es_ES.properties"));
+ * String translatedText = GlobalTranslations.translate("greeting", "John");
+ * }
+ * </pre>
+ * </p>
+ * <p>
+ * This class provides static methods to interact with the TranslationHandler,
+ * which manages translations for different locales with support for placeholders.
+ * </p>
  *
  * @author <a href="https://github.com/sanguine6660">@sanguine6660</a>
  * @since 13.12.2023
  */
 public final class GlobalTranslations {
 
-    /**
-     * A map that stores translations for different locales.
-     * The keys are locale codes, and the values are Properties objects containing translations.
-     */
-    private static Map<String, Properties> translations = new ConcurrentHashMap<>();
-    /**
-     * The fallback Properties object used when a translation is not available for a specific locale.
-     */
-    private static Properties fallback;
+    private static TranslationHandler translationHandler = new TranslationHandler();
 
     // instantiation prevention
     private GlobalTranslations() {
+    }
+
+    /**
+     * Gets the TranslationHandler instance.
+     *
+     * @return The TranslationHandler instance.
+     */
+    public static TranslationHandler getTranslationHandler() {
+        return translationHandler;
     }
 
     /**
@@ -60,7 +72,7 @@ public final class GlobalTranslations {
      * @return The map of translations with locale codes as keys and Properties objects as values.
      */
     public static Map<String, Properties> getTranslations() {
-        return translations;
+        return translationHandler.getTranslations();
     }
 
     /**
@@ -69,7 +81,7 @@ public final class GlobalTranslations {
      * @return The fallback Properties object.
      */
     public static Properties getFallback() {
-        return fallback;
+        return translationHandler.getFallback();
     }
 
     /**
@@ -79,7 +91,7 @@ public final class GlobalTranslations {
      * These replacements are used by the {@link StaticMessagePlaceholders} class during text formatting.
      */
     public static Map<String, Object> getDefaultReplacements() {
-        return StaticMessagePlaceholders.getDefaultReplacements();
+        return translationHandler.getDefaultReplacements();
     }
 
     /**
@@ -89,19 +101,7 @@ public final class GlobalTranslations {
      * @param file       The file to load properties from.
      */
     private static void loadLang(Properties properties, File file) {
-        try (FileInputStream fileInputStream = new FileInputStream(file)) {
-            properties.load(fileInputStream);
-            // Iterate through the loaded properties and modify the values as needed
-            for (String propName : properties.stringPropertyNames()) {
-                String propValue = properties.getProperty(propName);
-                if (!propValue.startsWith("'")) continue;
-                // Remove single quotes from the property value
-                propValue = propValue.replace("'", "");
-                properties.setProperty(propName, propValue);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        translationHandler.loadLang(properties, file);
     }
 
     /**
@@ -110,7 +110,7 @@ public final class GlobalTranslations {
      * @param files Language properties files to load.
      */
     public static void init(File... files) {
-        init(null, files);
+        translationHandler.init(files);
     }
 
     /**
@@ -120,45 +120,7 @@ public final class GlobalTranslations {
      * @param files               Language properties files to load.
      */
     public static void init(Map<String, Object> defaultReplacements, File... files) {
-        StaticMessagePlaceholders.addDefaultReplacements(defaultReplacements);
-
-        // Load each language properties file
-        for (File file : files) {
-            // Skip directories, only process individual files
-            if (file.isDirectory()) continue;
-
-            // Get the name of the current file
-            String fileName = file.getName();
-
-            if (fileName.contains("platform")) continue;
-
-            // Create a new properties object to store language data
-            Properties properties = new Properties();
-
-            // Extract the language name from the file name
-            String langName = fileName.substring(0, fileName.lastIndexOf('.'));
-
-            // Check if the file is a language properties file and not a platform-specific one
-            if (fileName.endsWith(".properties")) {
-                // Load language properties from the file
-                loadLang(properties, file);
-            }
-            // If the file is not a valid language properties file, continue to the next iteration
-            else continue;
-
-            // Add the loaded language properties to the translations map
-            translations.put(langName, properties);
-
-            if (fallback == null) {
-                fallback = new Properties();
-                fallback = properties;
-            }
-        }
-
-        // Set the default fallback properties based on the system's default locale
-        if (translations.containsKey(Locale.getDefault().getLanguage())) {
-            fallback = translations.get(Locale.getDefault().getLanguage());
-        }
+        translationHandler.init(defaultReplacements, files);
     }
 
     /**
@@ -169,11 +131,7 @@ public final class GlobalTranslations {
      * @return Translated and formatted text.
      */
     public static String translate(String key, Object... args) {
-        Map<String, Object> replace = new HashMap<>(getDefaultReplacements());
-        for (int i = 0; i < args.length; i++) {
-            replace.put("" + i, args[i]);
-        }
-        return StaticMessagePlaceholders.fastFormat(fallback.getProperty(key, key), replace);
+        return translationHandler.translate(key, args);
     }
 
     /**
@@ -184,11 +142,7 @@ public final class GlobalTranslations {
      * @return Translated and formatted text.
      */
     public static String translate(String key, String... args) {
-        Map<String, Object> replace = new HashMap<>(getDefaultReplacements());
-        for (int i = 0; i < args.length; i++) {
-            replace.put("" + i, args[i]);
-        }
-        return StaticMessagePlaceholders.fastFormat(fallback.getProperty(key, key), replace);
+        return translationHandler.translate(key, args);
     }
 
     /**
@@ -198,7 +152,7 @@ public final class GlobalTranslations {
      * @return Translated and formatted text.
      */
     public static String translate(String key) {
-        return StaticMessagePlaceholders.fastFormat(fallback.getProperty(key, key), getDefaultReplacements());
+        return translationHandler.translate(key);
     }
 
     /**
@@ -210,12 +164,7 @@ public final class GlobalTranslations {
      * @return Translated and formatted text.
      */
     public static String translate(Locale locale, String key, Object... args) {
-        if (!translations.containsKey(locale.getLanguage())) return translate(key, args);
-        Map<String, Object> replace = new HashMap<>(getDefaultReplacements());
-        for (int i = 0; i < args.length; i++) {
-            replace.put("" + i, args[i]);
-        }
-        return StaticMessagePlaceholders.fastFormat(translations.get(locale.getLanguage()).getProperty(key, key), replace);
+        return translationHandler.translate(locale, key, args);
     }
 
     /**
@@ -227,12 +176,7 @@ public final class GlobalTranslations {
      * @return Translated and formatted text.
      */
     public static String translate(Locale locale, String key, String... args) {
-        if (!translations.containsKey(locale.getLanguage())) return translate(key, args);
-        Map<String, Object> replace = new HashMap<>(getDefaultReplacements());
-        for (int i = 0; i < args.length; i++) {
-            replace.put("" + i, args[i]);
-        }
-        return StaticMessagePlaceholders.fastFormat(translations.get(locale.getLanguage()).getProperty(key, key), replace);
+        return translationHandler.translate(locale, key, args);
     }
 
     /**
@@ -243,8 +187,7 @@ public final class GlobalTranslations {
      * @return Translated and formatted text.
      */
     public static String translate(Locale locale, String key) {
-        if (!translations.containsKey(locale.getLanguage())) return translate(key);
-        return StaticMessagePlaceholders.fastFormat(translations.get(locale.getLanguage()).getProperty(key, key), getDefaultReplacements());
+        return translationHandler.translate(locale, key);
     }
 
     /**
@@ -256,12 +199,7 @@ public final class GlobalTranslations {
      * @return Translated and formatted text.
      */
     public static String translate(WrappedString langName, String key, Object... args) {
-        if (!translations.containsKey(langName)) return translate(key, args);
-        Map<String, Object> replace = new HashMap<>(getDefaultReplacements());
-        for (int i = 0; i < args.length; i++) {
-            replace.put("" + i, args[i]);
-        }
-        return StaticMessagePlaceholders.fastFormat(translations.get(langName).getProperty(key, key), replace);
+        return translationHandler.translate(langName, key, args);
     }
 
     /**
@@ -273,12 +211,7 @@ public final class GlobalTranslations {
      * @return Translated and formatted text.
      */
     public static String translate(WrappedString langName, String key, String... args) {
-        if (!translations.containsKey(langName)) return translate(key, args);
-        Map<String, Object> replace = new HashMap<>(getDefaultReplacements());
-        for (int i = 0; i < args.length; i++) {
-            replace.put("" + i, args[i]);
-        }
-        return StaticMessagePlaceholders.fastFormat(translations.get(langName).getProperty(key, key), replace);
+        return translationHandler.translate(langName, key, args);
     }
 
     /**
@@ -289,8 +222,7 @@ public final class GlobalTranslations {
      * @return Translated and formatted text.
      */
     public static String translate(WrappedString langName, String key) {
-        if (!translations.containsKey(langName)) return translate(key);
-        return StaticMessagePlaceholders.fastFormat(translations.get(langName).getProperty(key, key), getDefaultReplacements());
+        return translationHandler.translate(langName, key);
     }
 
 }
