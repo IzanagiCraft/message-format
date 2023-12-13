@@ -80,6 +80,10 @@ tasks {
         filteringCharset = Charsets.UTF_8.name()
     }
 
+    processTestResources {
+        exclude("**/lang.properties")
+    }
+
     named("build") {
         dependsOn(named("shadowJar"))
     }
