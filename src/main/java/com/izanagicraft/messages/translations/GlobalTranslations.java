@@ -17,7 +17,10 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.izanagicraft.messages;
+package com.izanagicraft.messages.translations;
+
+import com.izanagicraft.messages.strings.WrappedString;
+import com.izanagicraft.messages.placeholders.StaticMessagePlaceholders;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -28,14 +31,14 @@ import java.util.Properties;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * message-format; com.izanagicraft.messages:Translations
+ * message-format; com.izanagicraft.messages.translations:GlobalTranslations
  * <p>
  * Utility class for handling translations with placeholders.
  *
  * @author <a href="https://github.com/sanguine6660">@sanguine6660</a>
  * @since 13.12.2023
  */
-public final class Translations {
+public final class GlobalTranslations {
 
     /**
      * A map that stores translations for different locales.
@@ -48,7 +51,7 @@ public final class Translations {
     private static Properties fallback;
 
     // instantiation prevention
-    private Translations() {
+    private GlobalTranslations() {
     }
 
     /**

@@ -17,7 +17,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.izanagicraft.messages;
+package com.izanagicraft.messages.placeholders;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -28,7 +28,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * message-format; com.izanagicraft.messages:StatticMessagePlaceholders
+ * message-format; com.izanagicraft.messages.placeholders:StaticMessagePlaceholders
  * <p>
  * Utility class for handling placeholders in messages.
  *

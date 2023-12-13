@@ -19,7 +19,7 @@
 
 package tests;
 
-import com.izanagicraft.messages.StaticMessagePlaceholders;
+import com.izanagicraft.messages.placeholders.StaticMessagePlaceholders;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

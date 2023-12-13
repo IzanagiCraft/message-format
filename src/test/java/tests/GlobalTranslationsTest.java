@@ -20,7 +20,7 @@
 package tests;
 
 
-import com.izanagicraft.messages.Translations;
+import com.izanagicraft.messages.translations.GlobalTranslations;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -32,15 +32,15 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * message-format; tests:TranslationTest
+ * message-format; tests:GlobalTranslationsTest
  *
  * @author <a href="https://github.com/LuciferMorningstarDev">LuciferMorningstarDev</a>
  * @since 13.12.2023
  */
-public class TranslationsTest {
+public class GlobalTranslationsTest {
 
     @BeforeAll
-    static void initTranslations() {
+    static void initGlobalTranslations() {
         // Load the test language file
         File testFile = new File("src/test/resources/lang.properties");
 
@@ -49,7 +49,7 @@ public class TranslationsTest {
 
         // Initialize translations with the test language file
         Map<String, Object> defaultReplacements = createDefaultReplacements();
-        Translations.init(defaultReplacements, testFile);
+        GlobalTranslations.init(defaultReplacements, testFile);
     }
 
     private static Map<String, Object> createDefaultReplacements() {
@@ -62,24 +62,24 @@ public class TranslationsTest {
     @Test
     void testInit() {
         // Ensure translations are initialized
-        assertNotNull(Translations.getTranslations());
-        assertFalse(Translations.getTranslations().isEmpty());
+        assertNotNull(GlobalTranslations.getTranslations());
+        assertFalse(GlobalTranslations.getTranslations().isEmpty());
 
         // Ensure fallback is set
-        assertNotNull(Translations.getFallback());
+        assertNotNull(GlobalTranslations.getFallback());
     }
 
     @Test
     void testTranslateGreeting() {
         // Test translating the 'greeting' key with a placeholder
-        String translated = Translations.translate("greeting", "John");
+        String translated = GlobalTranslations.translate("greeting", "John");
         assertEquals("[PREFIX] Hello, John!", translated);
     }
 
     @Test
     void testTranslateGreetingWithLocale() {
         // Test translating the 'greeting' key with a specific locale
-        String translated = Translations.translate(Locale.US, "greeting", "Alice");
+        String translated = GlobalTranslations.translate(Locale.US, "greeting", "Alice");
         assertEquals("[PREFIX] Hello, Alice!", translated);
     }
 
@@ -88,7 +88,7 @@ public class TranslationsTest {
         // Test translating the 'iterator' key with a numeric placeholder
         for (int i = 0; i < 5; i++) {
             int placeholderValue = 42;
-            String translated = Translations.translate("iterator", placeholderValue);
+            String translated = GlobalTranslations.translate("iterator", placeholderValue);
             String expected = "[PREFIX] Current Iteration Index " + placeholderValue + ".";
             assertEquals(expected, translated);
         }
@@ -100,7 +100,7 @@ public class TranslationsTest {
         // Test translating the 'iterator' key with a specific locale and numeric placeholder
         for (int i = 0; i < 5; i++) {
             int placeholderValue = i;
-            String translated = Translations.translate(locale, "iterator", placeholderValue);
+            String translated = GlobalTranslations.translate(locale, "iterator", placeholderValue);
             String expected = "[PREFIX] Current Iteration Index " + placeholderValue + ".";
             assertEquals(expected, translated);
         }
@@ -109,21 +109,21 @@ public class TranslationsTest {
     @Test
     void testTranslateWithMissingKey() {
         // Test translating a key that does not exist in the language file
-        String translated = Translations.translate("nonexistent.key", "arg1", "arg2");
+        String translated = GlobalTranslations.translate("nonexistent.key", "arg1", "arg2");
         assertEquals("nonexistent.key", translated);
     }
 
     @Test
     void testTranslateWithDefaultReplacements() {
         // Test translating with default replacements
-        String translated = Translations.translate("greeting");
+        String translated = GlobalTranslations.translate("greeting");
         assertEquals("[PREFIX] Hello, null!", translated);
     }
 
     @Test
     void testTranslateWithInvalidLocale() {
         // Test translating with an invalid locale, should fall back to default
-        String translated = Translations.translate(new Locale("invalid"), "greeting", "Bob");
+        String translated = GlobalTranslations.translate(new Locale("invalid"), "greeting", "Bob");
         assertEquals("[PREFIX] Hello, Bob!", translated);
     }
 

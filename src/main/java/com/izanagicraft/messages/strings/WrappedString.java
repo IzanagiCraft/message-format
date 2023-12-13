@@ -17,10 +17,10 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.izanagicraft.messages;
+package com.izanagicraft.messages.strings;
 
 /**
- * message-format; com.izanagicraft.messages:WrappedString
+ * message-format; com.izanagicraft.messages.strings:WrappedString
  * <p>
  * The WrappedString class represents a simple wrapper around a String value.
  * It provides methods to create, access, and modify the underlying String.
