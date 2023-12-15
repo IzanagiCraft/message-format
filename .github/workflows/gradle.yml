@@ -20,9 +20,8 @@ jobs:
           java-version: 17
           distribution: 'temurin'
 
-      # TODO: publishing to maven repo
-      - name: Build and Test
-        run: ./gradlew licenseFormat test build
+      - name: Build and Test and Publish
+        run: ./gradlew licenseFormat -DpublishName=upload -DpublishPassword=${{ secrets.PUBLISH_PASSWORD }} test build publish
 
       - name: Get Old Release Tag
         id: get_old_release

@@ -20,6 +20,7 @@ description = "A Simple Message Translation and Placeholder replacement lib."
 
 repositories {
     mavenCentral()
+    mavenLocal()
 }
 
 dependencies {
@@ -52,7 +53,54 @@ java {
     withJavadocJar()
 }
 
-// TODO: publishing to maven repo
+publishing {
+    (components["java"] as AdhocComponentWithVariants).withVariantsFromConfiguration(configurations["shadowRuntimeElements"]) {
+        skip()
+    }
+
+    publications {
+        create<MavenPublication>(project.name) {
+            from(components["java"])
+
+            pom {
+                name.set(project.name)
+                url.set("https://github.com/IzanagiCraft/message-format")
+                properties.put("inceptionYear", "2023")
+
+                licenses {
+                    license {
+                        name.set("General Public License (GPL v3.0)")
+                        url.set("https://www.gnu.org/licenses/gpl-3.0.txt")
+                        distribution.set("repo")
+                    }
+                }
+
+                developers {
+                    developer {
+                        id.set("sanguine6660")
+                        name.set("Sanguine")
+                        email.set("sanguine6660@gmail.com")
+                        url.set("https://github.com/sanguine6660")
+                    }
+                }
+            }
+        }
+    }
+
+    repositories {
+        mavenLocal()
+
+        if (System.getProperty("publishName") != null && System.getProperty("publishPassword") != null) {
+            maven("https://artifactory.izanagicraft.tech/repository/maven-snapshots/") {
+                this.name = "artifactory-izanagicraft-snapshots"
+                credentials {
+                    this.password = System.getProperty("publishPassword")
+                    this.username = System.getProperty("publishName")
+                }
+            }
+        }
+    }
+}
 
 tasks {
 
